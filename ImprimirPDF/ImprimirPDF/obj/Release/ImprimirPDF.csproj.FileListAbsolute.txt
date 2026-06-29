@@ -1,0 +1,7 @@
+C:\Users\usuario\source\repos\ImprimirPDF\ImprimirPDF\bin\Release\ImprimirPDF.exe.config
+C:\Users\usuario\source\repos\ImprimirPDF\ImprimirPDF\bin\Release\ImprimirPDF.exe
+C:\Users\usuario\source\repos\ImprimirPDF\ImprimirPDF\bin\Release\ImprimirPDF.pdb
+C:\Users\usuario\source\repos\ImprimirPDF\ImprimirPDF\obj\Release\ImprimirPDF.csproj.AssemblyReference.cache
+C:\Users\usuario\source\repos\ImprimirPDF\ImprimirPDF\obj\Release\ImprimirPDF.csproj.CoreCompileInputs.cache
+C:\Users\usuario\source\repos\ImprimirPDF\ImprimirPDF\obj\Release\ImprimirPDF.exe
+C:\Users\usuario\source\repos\ImprimirPDF\ImprimirPDF\obj\Release\ImprimirPDF.pdb
