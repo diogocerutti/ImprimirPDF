@@ -1,7 +1,10 @@
 # ImprimirPDF
-Simple C# (.NET Framework 4.7.2) program to print a specific .pdf file on the selected printer using SumatraPDF.
 
-## Requisitos
+Aplicativo desenvolvido em C# (.NET Framework 4.7.2) para imprimir automaticamente um arquivo PDF em uma impressora específica utilizando o SumatraPDF.
+
+---
+
+# Requisitos
 
 Antes de utilizar o programa, verifique se o computador atende aos seguintes requisitos:
 
@@ -10,37 +13,134 @@ Antes de utilizar o programa, verifique se o computador atende aos seguintes req
 * Impressora instalada e configurada no Windows;
 * Arquivo `SumatraPDF.exe` presente na mesma pasta do programa.
 
-## Estrutura dos arquivos
+---
+
+# Estrutura dos arquivos
 
 Todos os arquivos abaixo devem permanecer na mesma pasta:
 
 ```text
 ImprimirPDF.exe
 SumatraPDF.exe
+config.ini
 pedido.pdf
 ```
 
-## Configuração da impressora
+> **Observação:** o nome do arquivo PDF pode ser alterado. Basta atualizar o arquivo `config.ini`.
 
-Antes de utilizar o programa pela primeira vez:
+---
 
-1. Instale a impressora normalmente no Windows.
-2. Verifique se o nome da impressora corresponde ao configurado no código-fonte do aplicativo.
-3. Caso o nome da impressora seja diferente, altere a variável `nomeImpressora` no código, compile novamente o projeto e substitua o executável.
+# Configuração
 
-## Como utilizar
+O programa utiliza um arquivo chamado `config.ini` para definir qual impressora será utilizada e qual arquivo PDF será impresso.
 
-1. Copie os arquivos para qualquer pasta do computador ou para um pendrive.
-2. Certifique-se de que o arquivo `pedido.pdf` é o documento que deseja imprimir.
-3. Dê um duplo clique em `ImprimirPDF.exe`.
-4. O programa enviará automaticamente o PDF para a impressora configurada e será encerrado.
+## Exemplo de `config.ini`
 
-## Substituindo o PDF
+```ini
+# ======================================
+# Configuração do ImprimirPDF
+# ======================================
 
-Sempre que desejar imprimir outro documento:
+# Nome EXATO da impressora instalada no Windows
+IMPRESSORA=EPSON TM-T20III Receipt
 
-1. Substitua o arquivo `pedido.pdf` pelo novo PDF.
-2. Mantenha exatamente o mesmo nome (`pedido.pdf`).
-3. Execute novamente o `ImprimirPDF.exe`.
-* Recomenda-se manter todos os arquivos juntos na mesma pasta para garantir o funcionamento correto do aplicativo.
+# Nome do arquivo PDF localizado na mesma pasta
+ARQUIVO=pedido.pdf
+```
 
+## Configurando a impressora
+
+1. Abra **Painel de Controle → Dispositivos e Impressoras**.
+2. Localize a impressora desejada.
+3. Copie exatamente o nome exibido.
+4. Edite a linha `IMPRESSORA=` no arquivo `config.ini`.
+
+Exemplo:
+
+```ini
+IMPRESSORA=HP LaserJet Pro M404
+```
+
+---
+
+## Configurando o arquivo PDF
+
+Informe o nome do arquivo PDF que será impresso.
+
+Exemplo:
+
+```ini
+ARQUIVO=nota_fiscal.pdf
+```
+
+O arquivo informado deve estar na mesma pasta do `ImprimirPDF.exe`.
+
+---
+
+# Como utilizar
+
+1. Copie todos os arquivos para qualquer pasta do computador ou para um pendrive.
+2. Configure o arquivo `config.ini` informando:
+
+   * o nome da impressora;
+   * o nome do arquivo PDF.
+3. Certifique-se de que o PDF informado existe na mesma pasta.
+4. Execute `ImprimirPDF.exe`.
+5. O documento será enviado automaticamente para a impressora configurada.
+
+---
+
+# Alterando a impressora
+
+Caso o programa seja utilizado em outro computador, **não é necessário recompilar o projeto**.
+
+Basta editar o arquivo `config.ini`:
+
+```ini
+IMPRESSORA=Nome da Nova Impressora
+```
+
+Salve o arquivo e execute novamente o programa.
+
+---
+
+# Alterando o PDF
+
+Também não é necessário recompilar.
+
+Basta:
+
+1. Copiar o novo PDF para a mesma pasta do programa.
+2. Alterar a linha:
+
+```ini
+ARQUIVO=novo_arquivo.pdf
+```
+
+Salve o `config.ini` e execute novamente o programa.
+
+---
+
+# Distribuição
+
+Para utilizar o programa em outro computador, basta copiar todos os arquivos da pasta para o novo computador ou para um pendrive.
+
+Exemplo:
+
+```text
+ImprimirPDF.exe
+SumatraPDF.exe
+config.ini
+pedido.pdf
+```
+
+Depois, se necessário, ajuste apenas o arquivo `config.ini` conforme a impressora e o PDF desejados.
+
+---
+
+# Observações
+
+* Não mova o `SumatraPDF.exe` para outra pasta.
+* Mantenha todos os arquivos na mesma pasta do executável.
+* O programa lê o arquivo `config.ini` sempre que é iniciado, permitindo alterar a impressora e o PDF sem recompilar o projeto.
+* Comentários iniciados por `#` ou `;` e linhas em branco são ignorados no arquivo `config.ini`.
