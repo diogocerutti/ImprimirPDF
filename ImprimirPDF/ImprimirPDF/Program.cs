@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Windows.Forms;
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -8,29 +9,64 @@ namespace ImprimirPDF
     {
         static void Main(string[] args)
         {
-            // Nome EXATO da impressora
-            string nomeImpressora = "EPSON TM-T20X Receipt";
-
-            // Pasta onde está o executável
             string pasta = AppDomain.CurrentDomain.BaseDirectory;
 
-            // Caminhos dos arquivos
+            string arquivoConfig = Path.Combine(pasta, "config.ini");
             string sumatra = Path.Combine(pasta, "SumatraPDF.exe");
-            string pdf = Path.Combine(pasta, "ESPELHO CAIXA 2 IMPRIMIR.pdf");
 
-            // Verifica se o SumatraPDF existe
-            if (!File.Exists(sumatra))
+            // Verifica se existe o arquivo de configuração
+            if (!File.Exists(arquivoConfig))
             {
-                Console.WriteLine("Erro: SumatraPDF.exe não foi encontrado.");
-                Console.ReadKey();
+                MostrarErro("O arquivo config.ini não foi encontrado.");
                 return;
             }
 
-            // Verifica se o PDF existe
+            string nomeImpressora = "";
+            string nomeArquivoPdf = "";
+
+            foreach (string linhaOriginal in File.ReadAllLines(arquivoConfig))
+            {
+                string linha = linhaOriginal.Trim();
+
+                if (string.IsNullOrWhiteSpace(linha))
+                    continue;
+
+                if (linha.StartsWith("#") || linha.StartsWith(";"))
+                    continue;
+
+                if (linha.StartsWith("IMPRESSORA=", StringComparison.OrdinalIgnoreCase))
+                {
+                    nomeImpressora = linha.Substring("IMPRESSORA=".Length).Trim();
+                }
+                else if (linha.StartsWith("ARQUIVO=", StringComparison.OrdinalIgnoreCase))
+                {
+                    nomeArquivoPdf = linha.Substring("ARQUIVO=".Length).Trim();
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(nomeImpressora))
+            {
+                MostrarErro("A impressora não foi informada no config.ini.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(nomeArquivoPdf))
+            {
+                MostrarErro("O arquivo PDF não foi informado no config.ini.");
+                return;
+            }
+
+            string pdf = Path.Combine(pasta, nomeArquivoPdf);
+
+            if (!File.Exists(sumatra))
+            {
+                MostrarErro("SumatraPDF.exe não encontrado.");
+                return;
+            }
+
             if (!File.Exists(pdf))
             {
-                Console.WriteLine("Erro: O PDF não foi encontrado.");
-                Console.ReadKey();
+                MostrarErro($"O arquivo '{nomeArquivoPdf}' não foi encontrado.");
                 return;
             }
 
@@ -40,28 +76,33 @@ namespace ImprimirPDF
 
                 processo.StartInfo.FileName = sumatra;
                 processo.StartInfo.Arguments =
-                    $"-print-to \"{nomeImpressora}\" \"{pdf}\"";
+                    $"-print-to \"{nomeImpressora}\" -silent -exit-when-done \"{pdf}\"";
 
                 processo.StartInfo.UseShellExecute = false;
                 processo.StartInfo.CreateNoWindow = true;
+
                 processo.Start();
 
-                // Aguarda o Sumatra finalizar
                 processo.WaitForExit();
 
-                // Código de saída do Sumatra
                 if (processo.ExitCode != 0)
                 {
-                    Console.WriteLine("A impressão não foi concluída.");
-                    Console.ReadKey();
+                    MostrarErro("O SumatraPDF retornou um erro durante a impressão.");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Erro ao imprimir:");
-                Console.WriteLine(ex.Message);
-                Console.ReadKey();
+                MostrarErro(ex.Message);
             }
+        }
+
+        static void MostrarErro(string mensagem)
+        {
+            System.Windows.Forms.MessageBox.Show(
+                mensagem,
+                "ImprimirPDF",
+                System.Windows.Forms.MessageBoxButtons.OK,
+                System.Windows.Forms.MessageBoxIcon.Error);
         }
     }
 }
